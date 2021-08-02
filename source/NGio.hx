@@ -1,4 +1,4 @@
-#if newgrounds
+#if newgroudns
 package;
 
 import flixel.FlxG;
@@ -265,4 +265,3 @@ class NGio
 	}
 }
 #end
-

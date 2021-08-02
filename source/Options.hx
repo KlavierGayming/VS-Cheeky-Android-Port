@@ -102,6 +102,25 @@ class DFJKOption extends Option
 		return  FlxG.save.data.dfjk ? "DFJK" : "WASD";
 	}
 }
+class McontrolsOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.switchState(new options.CustomControlsState());
+		return false;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Mobile Controls";
+	}
+}
 
 class CpuStrums extends Option
 {
@@ -168,27 +187,6 @@ class GhostTapOption extends Option
 	}
 }
 
-class McontrolsOption extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.switchState(new options.CustomControlsState());
-		display = updateDisplay();
-		return true;
-	}
-
-	private override function updateDisplay():String
-	{
-		return "Mobile controls";
-	}
-}
-
 class AccuracyOption extends Option
 {
 	public function new(desc:String)
@@ -206,26 +204,6 @@ class AccuracyOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Accuracy " + (!FlxG.save.data.accuracyDisplay ? "off" : "on");
-	}
-}
-
-class CutsceneOption extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-	}
-	public override function press():Bool
-	{
-		FlxG.save.data.cutsceneseverywhere = !FlxG.save.data.cutsceneseverywhere;
-		display = updateDisplay();
-		return true;
-	}
-
-	private override function updateDisplay():String
-	{
-		return "cutscenes everywhere " + (!FlxG.save.data.cutsceneseverywhere ? "off" : "on");
 	}
 }
 

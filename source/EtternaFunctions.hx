@@ -1,7 +1,3 @@
-package;
-/**
- * idk how this shit works and i dont want to know.
- */
 class EtternaFunctions
 {
     // erf constants

@@ -42,10 +42,16 @@ class DialogueBox extends FlxSpriteGroup
 			case 'senpai':
 				FlxG.sound.playMusic(Paths.music('Lunchbox'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
+			case 'rocky beats':
+				FlxG.sound.playMusic(Paths.music('wind'), 0);
+				FlxG.sound.music.fadeIn(1, 0, 0.8);
 			case 'devils jello':
 				FlxG.sound.playMusic(Paths.music('LunchboxScary'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
 			case 'toughstone':
+				FlxG.sound.playMusic(Paths.music('wind'), 0);
+				FlxG.sound.music.fadeIn(1, 0, 0.8);
+			case 'hard 2 break':
 				FlxG.sound.playMusic(Paths.music('wind'), 0);
 				FlxG.sound.music.fadeIn(1, 0, 0.8);
 			case 'thorns':
@@ -134,10 +140,6 @@ class DialogueBox extends FlxSpriteGroup
 		box.updateHitbox();
 		add(box);
 
-		var tip:FlxText = new FlxText(5, FlxG.height - 10, 0, "Pro tip: Tap the box to continue going through the dialogue!", 16);
-		tip.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(tip);
-
 		box.screenCenter(X);
 		portraitLeft.screenCenter(X);
 
@@ -198,17 +200,13 @@ class DialogueBox extends FlxSpriteGroup
 		}
 		#if android
 		var justTapped:Bool = false;
-		
 		for (touch in FlxG.touches.list)
 		{
-			if (touch.overlaps(box) && touch.justPressed)
-			{
+			if (touch.justPressed)
 				justTapped = true;
-			} 
 		}
 		#end
-
-		if (FlxG.keys.justPressed.ANY #if android || justTapped #end  && dialogueStarted == true)
+		if (FlxG.keys.justPressed.ANY #if android || justTapped #end && dialogueStarted == true)
 		{
 			remove(dialogue);
 				

@@ -56,10 +56,8 @@ class OptionsMenu extends MusicBeatState
 			#end
 			new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
 			new WatermarkOption("Enable and disable all watermarks from the engine."),
-			new CutsceneOption("Toggle if cutscenes should be played everywhere, even from freeplay."),
-			new BotPlay("Showcase your charts and mods with autoplay.") #if android ,
-			new McontrolsOption("Change your button layout, or switch to hitbox. whatever suits you the most :)")
-			#end
+			new BotPlay("Showcase your charts and mods with autoplay."),
+			new McontrolsOption('Change your dpad scheme')
 		])
 		
 	];
@@ -112,7 +110,6 @@ class OptionsMenu extends MusicBeatState
 		#if android
 		addVirtualPad(FULL, A_B);
 		#end
-
 		super.create();
 	}
 

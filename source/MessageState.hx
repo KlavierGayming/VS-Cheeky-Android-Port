@@ -33,7 +33,6 @@ class MessageState extends MusicBeatState
             \nProgramming Done By @Lexicord2
 			\nWeek 2 Music Done By lonestarr
 			\nCredits To Kade Developer for Kade Engine
-			\nAndroid version made by Klavier Gayming
             \nThank You For Playing!",
             48);
 
@@ -47,11 +46,10 @@ class MessageState extends MusicBeatState
 			TEXRTBALLS.screenCenter();
 			add(TEXRTBALLS);
 
-			#if android
-			addVirtualPad(NONE, A_B);
-			#end
+		#if android
+		addVirtualPad(NONE, A);
+		#end
 
-			super.create();
 	}
 
 

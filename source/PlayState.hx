@@ -53,6 +53,7 @@ import lime.utils.Assets;
 import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
+import ui.Mobilecontrols;
 
 #if windows
 import Discord.DiscordClient;
@@ -60,9 +61,6 @@ import Discord.DiscordClient;
 #if windows
 import Sys;
 import sys.FileSystem;
-#end
-#if android
-import ui.Mobilecontrols;
 #end
 
 using StringTools;
@@ -102,10 +100,6 @@ class PlayState extends MusicBeatState
 	var iconRPC:String = "";
 	var detailsText:String = "";
 	var detailsPausedText:String = "";
-	#end
-
-	#if android
-	var mcontrols:Mobilecontrols; 
 	#end
 
 	private var vocals:FlxSound;
@@ -226,7 +220,7 @@ class PlayState extends MusicBeatState
 	
 	public function addObject(object:FlxBasic) { add(object); }
 	public function removeObject(object:FlxBasic) { remove(object); }
-
+	var mcontrols:Mobilecontrols;
 
 	override public function create()
 	{
@@ -1093,6 +1087,7 @@ class PlayState extends MusicBeatState
 		if (loadRep)
 			replayTxt.cameras = [camHUD];
 
+		
 		#if android
 		mcontrols = new Mobilecontrols();
 		switch (mcontrols.mode)
@@ -1123,7 +1118,7 @@ class PlayState extends MusicBeatState
 		// cameras = [FlxG.cameras.list[1]];
 		startingSong = true;
 		
-		if (isStoryMode || FlxG.save.data.cutsceneseverywhere)
+		if (isStoryMode)
 		{
 			switch (curSong.toLowerCase())
 			{
@@ -1158,13 +1153,11 @@ class PlayState extends MusicBeatState
 				case 'senpai':
 					schoolIntro(doof);
 				case 'rocky beats':
-					rockyIntro(doof);
+					mugenintro(doof);
 				case 'devils jello':
 					mugenintro(doof);
 				case 'toughstone':
 					mugenintro(doof);
-				case 'hard 2 break':
-					breakIntro();
 				case 'roses':
 					FlxG.sound.play(Paths.sound('ANGRY'));
 					schoolIntro(doof);
@@ -1183,12 +1176,6 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		//if (!loadRep)
-			//rep = new Replay("na");
-
-		#if android
-		addVirtualPad(NONE, A);
-		#end
 
 		super.create();
 	}
@@ -1327,43 +1314,6 @@ class PlayState extends MusicBeatState
 				remove(black);
 			}
 		});
-	}
-	function rockyIntro(?dialogueBox:DialogueBox):Void {
-		var video = new VideoPlayer(0, 0, 'videos/cutscene-intro.webm');
-		video.finishCallback = () -> {
-			remove(video);
-			FlxG.sound.playMusic(Paths.music('wind'), 0);
-			FlxG.sound.music.fadeIn(1, 0, 0.8);
-			add(dialogueBox);
-		}
-		video.ownCamera();
-		video.setGraphicSize(Std.int(video.width * 1.5));
-		video.updateHitbox();
-		add(video);
-		video.play();
-	}
-	function breakIntro(?dialogueBox:DialogueBox):Void {
-		var video = new VideoPlayer(0, 0, 'videos/cutscene2/cutscene2.webm');
-		video.finishCallback = () -> {
-			remove(video);
-			startCountdown();
-		}
-		video.ownCamera();
-		video.updateHitbox();
-		add(video);
-		video.play();
-	}
-	function endIt():Void {
-		var video = new VideoPlayer(0, 0, 'videos/cutscene3/cutscenefinal.webm');
-		video.finishCallback = () -> {
-			remove(video);
-			FlxG.switchState(new MainMenuState());
-		}
-		video.ownCamera();
-		video.setGraphicSize(Std.int(video.width * 1.5));
-		video.updateHitbox();
-		add(video);
-		video.play();
 	}
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
@@ -2110,7 +2060,7 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 
 		scoreTxt.text = Ratings.CalculateRanking(songScore,songScoreDef,nps,maxNPS,accuracy);
-		if (controls.ACCEPT && startedCountdown && canPause)
+		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
 		{
 			persistentUpdate = false;
 			persistentDraw = true;
@@ -2725,15 +2675,6 @@ class PlayState extends MusicBeatState
 
 	function endSong():Void
 	{
-		//if (!loadRep)
-			//rep.SaveReplay(saveNotes);
-		//else
-		//{
-			FlxG.save.data.botplay = false;
-			FlxG.save.data.scrollSpeed = 1;
-			FlxG.save.data.downscroll = false;
-		//}
-
 		if (FlxG.save.data.fpsCap > 290)
 			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
 
@@ -2776,11 +2717,13 @@ class PlayState extends MusicBeatState
 
 					transIn = FlxTransitionableState.defaultTransIn;
 					transOut = FlxTransitionableState.defaultTransOut;
-
-					if (SONG.song.toLowerCase() != 'hard 2 break')
+					switch(SONG.song.toLowerCase())
+					{
+					case 'hard 2 break':
+						LoadingState.loadAndSwitchState(new VideoState("assets/videos/cutscene3/cutscenefinal.webm", new MainMenuState()));
+					default:
 						LoadingState.loadAndSwitchState(new MainMenuState());
-					else
-						endIt();
+					}
 
 
 					#if windows
@@ -2833,17 +2776,14 @@ class PlayState extends MusicBeatState
 
 					PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 					FlxG.sound.music.stop();
-					//switch(curSong.toLowerCase())
-					//{
-						//case 'toughstone':
+					switch(curSong.toLowerCase())
+					{
+						case 'toughstone':
 							//bro what the fuck is wrong with the webm
-							// i hate gwebdev's video code ngfl
-							// like really
-							// the only reason i dont like it is really cuz he's an asshole.
-							//LoadingState.loadAndSwitchState(new VideoState("assets/videos/cutscene2/cutscene2.webm", new PlayState()));
-						//default:
+							LoadingState.loadAndSwitchState(new VideoState("assets/videos/cutscene2/cutscene2.webm", new PlayState()));
+						default:
 							LoadingState.loadAndSwitchState(new PlayState());
-					//}
+						}
 					}
 				}
 			else
@@ -3147,9 +3087,6 @@ class PlayState extends MusicBeatState
 		var rightHold:Bool = false;
 		var leftHold:Bool = false;	
 
-		/**
-		 * This function sucks lol
-		 */
 		private function keyShit():Void // I've invested in emma stocks
 			{
 				// control arrays, order L D R U
@@ -3704,6 +3641,16 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
+		if (SONG.song.toLowerCase() == 'rocky beats')
+		{
+			var curSection:Int = Std.int(curStep / 16);
+			if (curSection >= 24 && curSection < 40 || curSection >= 64 && curSection < 80)
+			{
+				camHUD.zoom = 1.035;
+				FlxG.camera.zoom = 1.04;
+			}
+		}
+
 		if (SONG.notes[Math.floor(curStep / 16)] != null)
 		{
 			if (SONG.notes[Math.floor(curStep / 16)].changeBPM)
@@ -3835,13 +3782,6 @@ class PlayState extends MusicBeatState
 			{
 				boyfriend.playAnim('hey', true);
 				dad.playAnim('cheer', true);
-			}
-
-			var section:Int = Std.int(curStep/16);
-			if (curBeat % 1 == 0 && section >= 24 && section < 40 && SONG.song.toLowerCase() == 'rocky beats' || curBeat % 1 == 0 && section >= 64 && section < 80 && SONG.song.toLowerCase() == 'rocky beats')
-			{
-				FlxG.camera.zoom = 1.04;
-				camHUD.zoom = 1.035;
 			}
 
 		switch (curStage)

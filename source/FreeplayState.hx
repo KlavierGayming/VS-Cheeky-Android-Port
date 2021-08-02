@@ -145,11 +145,9 @@ class FreeplayState extends MusicBeatState
 
 			trace(md);
 		 */
-
-		 #if android
-		 addVirtualPad(FULL, A_B);
-		 #end
-
+		#if android
+		addVirtualPad(FULL, A_B);
+		#end
 		super.create();
 	}
 
@@ -250,14 +248,14 @@ class FreeplayState extends MusicBeatState
 			case 2:
 				diffText.text = "HARD";
 		//	case 3:
-				//diffText.text = "Encore"; huh?
+				//diffText.text = "Encore";
 		}
 	}
 
 	function changeSelection(change:Int = 0)
 	{
 		#if !switch
-		// NGio.logEvent('Fresh'); :))))
+		// NGio.logEvent('Fresh');
 		#end
 
 		// NGio.logEvent('Fresh');

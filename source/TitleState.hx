@@ -270,7 +270,7 @@ class TitleState extends MusicBeatState
 				pressedEnter = true;
 			}
 		}
-		//#end wtf i accidentally locked up the entire block
+		//#end
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 

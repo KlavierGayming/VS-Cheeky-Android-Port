@@ -183,11 +183,9 @@ class StoryMenuState extends MusicBeatState
 		updateText();
 
 		trace("Line 165");
-
 		#if android
 		addVirtualPad(FULL, A_B);
 		#end
-
 		super.create();
 	}
 
@@ -294,14 +292,14 @@ class StoryMenuState extends MusicBeatState
 			PlayState.campaignScore = 0;
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
-				//if (curWeek == 1)
-				//{
-				//LoadingState.loadAndSwitchState(new VideoState("assets/videos/cutscene-intro.webm", new PlayState())); // i hate gwebdev.
-				//}
-				//else
-				//{
+				if (curWeek == 1)
+				{
+				LoadingState.loadAndSwitchState(new VideoState("assets/videos/cutscene-intro.webm", new PlayState()));
+				}
+				else
+				{
 				LoadingState.loadAndSwitchState(new PlayState(), true);
-				//}
+				}
 			});
 		}
 	}

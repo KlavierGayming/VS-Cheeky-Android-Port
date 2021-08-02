@@ -119,11 +119,6 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-		var luckydawg:FlxText = new FlxText(5, 5, 0, "Mobile Controls code made by luckydog7\nPort made by Klavier Gayming\n", 16);
-		luckydawg.scrollFactor.set();
-		luckydawg.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(luckydawg);
-
 		// NG.core.calls.event.logEvent('swag').send();
 
 
@@ -137,7 +132,6 @@ class MainMenuState extends MusicBeatState
 		#if android
 		addVirtualPad(UP_DOWN, A_B);
 		#end
-
 		super.create();
 	}
 

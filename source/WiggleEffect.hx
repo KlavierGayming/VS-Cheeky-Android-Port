@@ -125,7 +125,7 @@ class WiggleShader extends FlxShader
 		{
 			vec2 uv = sineWave(openfl_TextureCoordv);
 			gl_FragColor = texture2D(bitmap, uv);
-		}') // why is it a string???
+		}')
 	public function new()
 	{
 		super();
